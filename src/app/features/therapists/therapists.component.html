@@ -1,0 +1,75 @@
+<section class="section">
+  <div class="panel">
+    <h2>{{ form.controls.id.value ? 'Editar terapeuta' : 'Nuevo terapeuta' }}</h2>
+    <form [formGroup]="form" (ngSubmit)="submit()" class="form">
+      <div class="field">
+        <label>Nombre completo</label>
+        <input type="text" formControlName="fullName" />
+        <small *ngIf="form.controls.fullName.touched && form.controls.fullName.invalid"
+          >El nombre es obligatorio.</small
+        >
+      </div>
+      <div class="field">
+        <label>Correo electrónico</label>
+        <input type="email" formControlName="email" />
+        <small *ngIf="form.controls.email.touched && form.controls.email.invalid"
+          >Ingresa un correo válido.</small
+        >
+      </div>
+      <div class="field">
+        <label>Teléfono</label>
+        <input type="tel" formControlName="phoneNumber" />
+        <small *ngIf="form.controls.phoneNumber.touched && form.controls.phoneNumber.invalid"
+          >El teléfono es obligatorio.</small
+        >
+      </div>
+      <div class="field">
+        <label>Especialidad</label>
+        <input type="text" formControlName="specialty" placeholder="Opcional" />
+      </div>
+      <div class="actions">
+        <button type="submit" [disabled]="loading()">
+          {{ form.controls.id.value ? 'Actualizar' : 'Crear' }}
+        </button>
+        <button type="button" class="secondary" (click)="resetForm()">Limpiar</button>
+      </div>
+    </form>
+    <p class="feedback" *ngIf="feedback()">{{ feedback() }}</p>
+    <p class="error" *ngIf="error()">{{ error() }}</p>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <h2>Terapeutas</h2>
+      <button type="button" class="refresh" (click)="loadTherapists()">Actualizar</button>
+    </div>
+    <p *ngIf="loading()" class="status">Cargando...</p>
+    <p *ngIf="!loading() && !therapists().length" class="status">No hay terapeutas registrados.</p>
+
+    <div class="table-wrapper" *ngIf="therapists().length">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Teléfono</th>
+            <th>Especialidad</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let therapist of therapists(); trackBy: trackById">
+            <td>{{ therapist.fullName }}</td>
+            <td>{{ therapist.email }}</td>
+            <td>{{ therapist.phoneNumber }}</td>
+            <td>{{ therapist.specialty || '—' }}</td>
+            <td class="actions">
+              <button type="button" (click)="edit(therapist)">Editar</button>
+              <button type="button" class="danger" (click)="remove(therapist)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

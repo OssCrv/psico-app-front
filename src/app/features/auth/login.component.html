@@ -1,0 +1,37 @@
+<div class="login-wrapper">
+  <section class="panel">
+    <h2>Ingreso administrativo</h2>
+    <p class="intro">Autentícate con un usuario con rol de administrador para acceder al panel.</p>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="form">
+      <label class="field">
+        <span>Usuario</span>
+        <input type="text" formControlName="username" placeholder="admin" />
+        <small class="error" *ngIf="form.controls.username.touched && form.controls.username.invalid">
+          El usuario es obligatorio.
+        </small>
+      </label>
+
+      <label class="field">
+        <span>Contraseña</span>
+        <input type="password" formControlName="password" placeholder="••••••" />
+        <small class="error" *ngIf="form.controls.password.touched && form.controls.password.invalid">
+          La contraseña es obligatoria.
+        </small>
+      </label>
+
+      <button type="submit" [disabled]="loading()" class="submit">{{ loading() ? 'Ingresando…' : 'Entrar' }}</button>
+    </form>
+
+    <p class="error" *ngIf="error()">{{ error() }}</p>
+
+    <div class="helper">
+      <h3>¿Cómo obtengo un token?</h3>
+      <ol>
+        <li>Configura un usuario en el backend con contraseña encriptada.</li>
+        <li>Realiza un POST a <code>/api/auth/authenticate</code> con las credenciales.</li>
+        <li>El token generado se guardará automáticamente para las siguientes peticiones.</li>
+      </ol>
+    </div>
+  </section>
+</div>
