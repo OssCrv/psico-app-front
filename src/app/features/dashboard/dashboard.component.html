@@ -1,0 +1,23 @@
+<section class="dashboard">
+  <div class="status" *ngIf="loading()">Cargando resumen…</div>
+  <div class="status error" *ngIf="error()">{{ error() }}</div>
+
+  <div class="summary" *ngIf="!loading() && !error()">
+    <article class="card" *ngFor="let item of summary()" [routerLink]="item.link">
+      <h3>{{ item.label }}</h3>
+      <p class="value">{{ item.value }}</p>
+      <p class="description">{{ item.description }}</p>
+      <span class="cta">Gestionar</span>
+    </article>
+  </div>
+
+  <section class="guide">
+    <h2>Flujo recomendado</h2>
+    <ol>
+      <li>Registra los <strong>edificios</strong> disponibles.</li>
+      <li>Asocia <strong>consultorios</strong> a cada edificio.</li>
+      <li>Da de alta a tus <strong>terapeutas</strong> con sus datos de contacto.</li>
+      <li>Agenda <strong>reservas</strong> asignando consultorio y terapeuta.</li>
+    </ol>
+  </section>
+</section>

@@ -1,0 +1,5 @@
+@import '../../shared/styles/panel.css';
+
+.field select:invalid {
+  color: #9ca3af;
+}

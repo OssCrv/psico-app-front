@@ -1,0 +1,69 @@
+<section class="section">
+  <div class="panel">
+    <h2>{{ form.controls.id.value ? 'Editar edificio' : 'Nuevo edificio' }}</h2>
+    <form [formGroup]="form" (ngSubmit)="submit()" class="form">
+      <div class="field">
+        <label>Nombre del edificio</label>
+        <input type="text" formControlName="buildingsName" />
+        <small *ngIf="form.controls.buildingsName.touched && form.controls.buildingsName.invalid"
+          >Ingresa un nombre válido.</small
+        >
+      </div>
+      <div class="field">
+        <label>Dirección</label>
+        <input type="text" formControlName="buildingsAddress" />
+        <small *ngIf="form.controls.buildingsAddress.touched && form.controls.buildingsAddress.invalid"
+          >La dirección es obligatoria.</small
+        >
+      </div>
+      <div class="field">
+        <label>Propietario</label>
+        <input type="text" formControlName="ownersName" />
+        <small *ngIf="form.controls.ownersName.touched && form.controls.ownersName.invalid"
+          >El nombre del propietario es obligatorio.</small
+        >
+      </div>
+      <div class="actions">
+        <button type="submit" [disabled]="loading()">
+          {{ form.controls.id.value ? 'Actualizar' : 'Crear' }}
+        </button>
+        <button type="button" class="secondary" (click)="resetForm()">Limpiar</button>
+      </div>
+    </form>
+    <p class="feedback" *ngIf="feedback()">{{ feedback() }}</p>
+    <p class="error" *ngIf="error()">{{ error() }}</p>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <h2>Listado de edificios</h2>
+      <button type="button" class="refresh" (click)="loadBuildings()">Actualizar</button>
+    </div>
+    <p *ngIf="loading()" class="status">Cargando...</p>
+    <p *ngIf="!loading() && !buildings().length" class="status">No hay edificios registrados.</p>
+
+    <div class="table-wrapper" *ngIf="buildings().length">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Dirección</th>
+            <th>Propietario</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let building of buildings(); trackBy: trackById">
+            <td>{{ building.buildingsName }}</td>
+            <td>{{ building.buildingsAddress }}</td>
+            <td>{{ building.ownersName }}</td>
+            <td class="actions">
+              <button type="button" (click)="edit(building)">Editar</button>
+              <button type="button" class="danger" (click)="remove(building)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

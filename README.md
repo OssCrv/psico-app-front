@@ -1,59 +1,51 @@
 # FrontendPsicoApp
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.7.
+Este proyecto fue generado con [Angular CLI](https://github.com/angular/angular-cli) versión 20.3.7 y ofrece un panel administrativo para gestionar la información del backend `psico-app`.
 
-## Development server
+## Características principales
 
-To start a local development server, run:
+- Inicio de sesión con las credenciales del backend y almacenamiento automático del token JWT.
+- Panel resumen con métricas rápidas de edificios, consultorios, terapeutas y reservas.
+- CRUD completo para edificios, consultorios, terapeutas y reservas.
+- Formularios reactivos con validaciones y mensajes de retroalimentación.
+- Interceptor HTTP que adjunta el token JWT a todas las peticiones autenticadas.
+
+La URL base de las peticiones apunta a `http://localhost:8090/api`. Ajusta este valor en `src/app/core/constants/api.constants.ts` si tu backend corre en otra ruta.
+
+## Puesta en marcha
+
+Instala las dependencias y levanta el servidor de desarrollo:
 
 ```bash
+npm install
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+El panel quedará disponible en `http://localhost:4200/`.
 
-## Code scaffolding
+## Flujo de autenticación
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+1. Registra un usuario administrador en el backend con contraseña encriptada.
+2. Inicia sesión desde `/login` con esas credenciales; el token se guardará automáticamente.
+3. Una vez autenticado podrás acceder al panel y gestionar todos los recursos.
+4. Usa el botón "Cerrar sesión" del encabezado para limpiar el token almacenado.
+
+## Ejecución de pruebas unitarias
 
 ```bash
-ng generate component component-name
+npm test -- --watch=false
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+> **Nota:** En este entorno no hay un binario de Chrome instalado, por lo que las pruebas unitarias mediante Karma pueden fallar al intentar abrir el navegador.
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+## Generación de build de producción
 
 ```bash
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Los artefactos quedarán disponibles en el directorio `dist/`.
 
-## Running unit tests
+## Recursos adicionales
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Consulta la [documentación oficial de Angular CLI](https://angular.dev/tools/cli) para profundizar en los comandos disponibles.
