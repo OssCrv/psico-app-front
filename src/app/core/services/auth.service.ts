@@ -14,11 +14,23 @@ export class AuthService {
 
   authenticate(request: AuthenticationRequest) {
     return this.http.post<AuthenticationResponse>(this.url, request).pipe(
-      tap((response) => this.tokenService.setToken(response.token))
+      tap((response) => {
+        const token = this.extractToken(response);
+
+        if (!token) {
+          throw new Error('Token no presente en la respuesta de autenticación.');
+        }
+
+        this.tokenService.setToken(token);
+      })
     );
   }
 
   logout(): void {
     this.tokenService.clearToken();
+  }
+
+  private extractToken(response: AuthenticationResponse): string | undefined {
+    return response.token ?? response.jwt;
   }
 }
