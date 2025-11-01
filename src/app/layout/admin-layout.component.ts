@@ -23,12 +23,12 @@ export class AdminLayoutComponent {
   protected readonly tokenService = inject(TokenService);
 
   protected readonly navItems: NavItem[] = [
-    { label: 'Dashboard', link: '/' },
-    { label: 'Edificios', link: '/buildings' },
-    { label: 'Consultorios', link: '/facilities' },
-    { label: 'Terapeutas', link: '/therapists' },
-    { label: 'Usuarios', link: '/users' },
-    { label: 'Reservas', link: '/reservations' }
+    { label: 'Dashboard', link: '/admin' },
+    { label: 'Edificios', link: '/admin/buildings' },
+    { label: 'Consultorios', link: '/admin/facilities' },
+    { label: 'Terapeutas', link: '/admin/therapists' },
+    { label: 'Usuarios', link: '/admin/users' },
+    { label: 'Reservas', link: '/admin/reservations' }
   ];
 
   logout(): void {

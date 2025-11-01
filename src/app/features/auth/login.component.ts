@@ -1,10 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
-import { AuthService } from '../../core/services/auth.service';
-import { TokenService } from '../../core/services/token.service';
+import { AuthService, UserRole } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -13,11 +12,10 @@ import { TokenService } from '../../core/services/token.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
-  private readonly tokenService = inject(TokenService);
 
   readonly loading = signal(false);
   readonly error = signal<string | null>(null);
@@ -27,12 +25,10 @@ export class LoginComponent {
     password: ['', Validators.required]
   });
 
-  constructor() {
-    effect(() => {
-      if (this.tokenService.hasToken()) {
-        this.router.navigate(['/']);
-      }
-    });
+  ngOnInit(): void {
+    if (this.authService.isLoggedIn()) {
+      this.redirectByRole(this.authService.getRole());
+    }
   }
 
   submit(): void {
@@ -47,7 +43,7 @@ export class LoginComponent {
     this.authService.authenticate(this.form.getRawValue()).subscribe({
       next: () => {
         this.loading.set(false);
-        this.router.navigate(['/']);
+        this.redirectByRole(this.authService.getRole());
       },
       error: (err) => {
         console.error('Authentication failed', err);
@@ -55,5 +51,25 @@ export class LoginComponent {
         this.error.set('No se pudo iniciar sesión. Revisa tus credenciales o intenta más tarde.');
       }
     });
+  }
+
+  private redirectByRole(role: UserRole | null): void {
+    switch (role) {
+      case 'ADMIN':
+        this.router.navigate(['/admin']);
+        break;
+      case 'TERAPEUTA':
+        this.router.navigate(['/therapist']);
+        break;
+      case 'PACIENTE':
+        this.router.navigate(['/patient']);
+        break;
+      case 'USUARIO':
+        this.router.navigate(['/user']);
+        break;
+      default:
+        this.router.navigate(['/login']);
+        break;
+    }
   }
 }

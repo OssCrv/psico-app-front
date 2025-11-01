@@ -52,25 +52,25 @@ export class DashboardComponent implements OnInit {
             label: 'Edificios',
             value: buildings.length,
             description: 'Espacios disponibles para ofrecer servicios.',
-            link: '/buildings'
+            link: '/admin/buildings'
           },
           {
             label: 'Consultorios',
             value: facilities.length,
             description: 'Ambientes asignables a terapeutas.',
-            link: '/facilities'
+            link: '/admin/facilities'
           },
           {
             label: 'Terapeutas',
             value: therapists.length,
             description: 'Profesionales disponibles para reservas.',
-            link: '/therapists'
+            link: '/admin/therapists'
           },
           {
             label: 'Reservas activas',
             value: reservations.length,
             description: 'Turnos planificados para pacientes.',
-            link: '/reservations'
+            link: '/admin/reservations'
           }
         ]);
         this.loading.set(false);
