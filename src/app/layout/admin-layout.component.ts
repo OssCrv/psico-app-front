@@ -27,6 +27,7 @@ export class AdminLayoutComponent {
     { label: 'Edificios', link: '/buildings' },
     { label: 'Consultorios', link: '/facilities' },
     { label: 'Terapeutas', link: '/therapists' },
+    { label: 'Usuarios', link: '/users' },
     { label: 'Reservas', link: '/reservations' }
   ];
 
