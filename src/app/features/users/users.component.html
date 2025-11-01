@@ -1,0 +1,160 @@
+<section class="section">
+  <div class="panel">
+    <h2>Crear usuario</h2>
+    <p class="intro">
+      Registra administradores, terapeutas, pacientes o usuarios generales con los campos básicos
+      requeridos por la plataforma.
+    </p>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="form">
+      <div class="field">
+        <label>Usuario</label>
+        <input type="text" formControlName="username" placeholder="Nombre de usuario" />
+        <small *ngIf="form.controls.username.touched && form.controls.username.invalid">
+          Ingresa un nombre de usuario.
+        </small>
+      </div>
+
+      <div class="field-grid">
+        <div class="field">
+          <label>Nombres</label>
+          <input type="text" formControlName="firstName" placeholder="Nombre" />
+          <small *ngIf="form.controls.firstName.touched && form.controls.firstName.invalid">
+            Ingresa el nombre.
+          </small>
+        </div>
+        <div class="field">
+          <label>Apellidos</label>
+          <input type="text" formControlName="lastName" placeholder="Apellidos" />
+          <small *ngIf="form.controls.lastName.touched && form.controls.lastName.invalid">
+            Ingresa los apellidos.
+          </small>
+        </div>
+      </div>
+
+      <div class="field-grid">
+        <div class="field">
+          <label>Tipo de documento</label>
+          <select formControlName="docType">
+            <option *ngFor="let type of docTypes" [value]="type">{{ type }}</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Número de documento</label>
+          <input type="text" formControlName="document" placeholder="Documento" />
+          <small *ngIf="form.controls.document.touched && form.controls.document.invalid">
+            Ingresa el número de documento.
+          </small>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>
+          <input type="checkbox" formControlName="professionalCard" /> Posee tarjeta profesional
+        </label>
+      </div>
+
+      <div class="field-grid">
+        <div class="field">
+          <label>Correo</label>
+          <input type="email" formControlName="email" placeholder="correo@ejemplo.com" />
+          <small *ngIf="form.controls.email.touched && form.controls.email.invalid">
+            Ingresa un correo válido.
+          </small>
+        </div>
+        <div class="field">
+          <label>Teléfono</label>
+          <input type="tel" formControlName="telephone" placeholder="Número de contacto" />
+          <small *ngIf="form.controls.telephone.touched && form.controls.telephone.invalid">
+            Ingresa un teléfono de contacto.
+          </small>
+        </div>
+      </div>
+
+      <div class="field-grid">
+        <div class="field">
+          <label>Contraseña temporal</label>
+          <input type="password" formControlName="password" placeholder="Contraseña" />
+          <small *ngIf="form.controls.password.touched && form.controls.password.invalid">
+            Ingresa una contraseña.
+          </small>
+        </div>
+        <div class="field">
+          <label>Rol</label>
+          <select formControlName="role">
+            <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>
+          <input type="checkbox" formControlName="isActive" /> Usuario activo
+        </label>
+      </div>
+
+      <div class="actions">
+        <button type="submit" [disabled]="submitting()">{{ submitting() ? 'Guardando…' : 'Crear usuario' }}</button>
+        <button type="button" class="secondary" (click)="form.reset({
+            username: '',
+            firstName: '',
+            lastName: '',
+            docType: docTypes[0],
+            document: '',
+            professionalCard: false,
+            email: '',
+            telephone: '',
+            isActive: true,
+            password: '',
+            role: roles[2]
+          })"
+        >Limpiar</button>
+      </div>
+    </form>
+
+    <p class="feedback" *ngIf="feedback()">{{ feedback() }}</p>
+    <p class="error" *ngIf="formError()">{{ formError() }}</p>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <h2>Consulta de usuarios</h2>
+      <button type="button" class="refresh" (click)="loadData()">Actualizar</button>
+    </div>
+
+    <p *ngIf="fetching()" class="status">Cargando información…</p>
+    <p *ngIf="listError()" class="error">{{ listError() }}</p>
+
+    <ng-container *ngIf="!fetching() && !listError()">
+      <div *ngFor="let group of userGroups" class="users-group">
+        <h3>{{ group.title }}</h3>
+        <p *ngIf="!group.users().length" class="status">{{ group.emptyMessage }}</p>
+
+        <div class="table-wrapper" *ngIf="group.users().length">
+          <table>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Documento</th>
+                <th>Correo</th>
+                <th>Teléfono</th>
+                <th>Rol</th>
+                <th>Activo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of group.users(); trackBy: trackByUser">
+                <td>{{ displayName(user) }}</td>
+                <td>{{ displayDocument(user) }}</td>
+                <td>{{ displayEmail(user) }}</td>
+                <td>{{ displayPhone(user) }}</td>
+                <td>{{ displayRole(user, group.roleFallback) }}</td>
+                <td>{{ displayActive(user) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</section>
