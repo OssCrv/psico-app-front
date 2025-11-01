@@ -6,6 +6,13 @@ import { API_BASE_URL } from '../constants/api.constants';
 import { AuthenticationRequest, AuthenticationResponse } from '../models/auth.model';
 import { TokenService } from './token.service';
 
+export type UserRole = 'ADMIN' | 'USUARIO' | 'TERAPEUTA' | 'PACIENTE';
+
+interface JwtPayload {
+  role?: UserRole;
+  [key: string]: unknown;
+}
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly http = inject(HttpClient);
@@ -28,6 +35,59 @@ export class AuthService {
 
   logout(): void {
     this.tokenService.clearToken();
+  }
+
+  isLoggedIn(): boolean {
+    return this.tokenService.hasToken();
+  }
+
+  getRole(): UserRole | null {
+    const payload = this.getPayload();
+    return payload?.role ?? null;
+  }
+
+  private getPayload(): JwtPayload | null {
+    const token = this.tokenService.getToken();
+
+    if (!token) {
+      return null;
+    }
+
+    const [, payloadSegment] = token.split('.');
+
+    if (!payloadSegment) {
+      return null;
+    }
+
+    const base64 = this.normalizeBase64(payloadSegment);
+
+    try {
+      const json = typeof atob === 'function' ? atob(base64) : globalThis.atob?.(base64);
+
+      if (!json) {
+        return null;
+      }
+
+      return JSON.parse(json) as JwtPayload;
+    } catch (error) {
+      console.warn('No se pudo decodificar el token JWT.', error);
+      return null;
+    }
+  }
+
+  private normalizeBase64(segment: string): string {
+    const base64 = segment.replace(/-/g, '+').replace(/_/g, '/');
+    const padding = base64.length % 4;
+
+    if (padding === 2) {
+      return `${base64}==`;
+    }
+
+    if (padding === 3) {
+      return `${base64}=`;
+    }
+
+    return base64;
   }
 
   private extractToken(response: AuthenticationResponse): string | undefined {
