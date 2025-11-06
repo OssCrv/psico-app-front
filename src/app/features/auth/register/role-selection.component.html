@@ -1,0 +1,22 @@
+<div class="selection-wrapper">
+  <header class="hero">
+    <div class="hero-text">
+      <p class="eyebrow">Comienza en unos minutos</p>
+      <h1>Elige cómo quieres formar parte de nuestra comunidad</h1>
+      <p class="lead">
+        Crea una cuenta para administrar edificios, ofrecer tus servicios como terapeuta o solicitar citas
+        como paciente. Después de registrarte podrás iniciar sesión y completar tu perfil.
+      </p>
+    </div>
+    <a routerLink="/login" class="link-login">Ya tengo cuenta</a>
+  </header>
+
+  <section class="cards">
+    <a *ngFor="let card of cards" [routerLink]="card.link" class="card">
+      <span class="material-symbols-rounded icon" aria-hidden="true">{{ card.icon }}</span>
+      <h2>{{ card.title }}</h2>
+      <p>{{ card.description }}</p>
+      <span class="cta">{{ card.cta }}</span>
+    </a>
+  </section>
+</div>

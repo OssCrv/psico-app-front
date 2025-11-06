@@ -1,0 +1,116 @@
+<div class="register-wrapper">
+  <header class="top-bar">
+    <button type="button" class="back" (click)="navigateToSelection()">
+      <span class="material-symbols-rounded" aria-hidden="true">arrow_back</span>
+      Volver a elegir rol
+    </button>
+    <a routerLink="/login" class="login-link">¿Ya tienes cuenta? Inicia sesión</a>
+  </header>
+
+  <section class="panel">
+    <div class="panel-header">
+      <span class="accent-icon material-symbols-rounded" aria-hidden="true">{{ config().accentIcon }}</span>
+      <div>
+        <h1>{{ config().title }}</h1>
+        <p>{{ config().description }}</p>
+      </div>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="form">
+      <div class="grid">
+        <label class="field">
+          <span>Nombre de usuario</span>
+          <input formControlName="username" type="text" placeholder="usuario123" />
+          <small class="error" *ngIf="form.controls.username.touched && form.controls.username.invalid">
+            El usuario es obligatorio.
+          </small>
+        </label>
+
+        <label class="field">
+          <span>Nombre</span>
+          <input formControlName="firstName" type="text" placeholder="María" />
+          <small class="error" *ngIf="form.controls.firstName.touched && form.controls.firstName.invalid">
+            Ingresa tu nombre.
+          </small>
+        </label>
+
+        <label class="field">
+          <span>Apellidos</span>
+          <input formControlName="lastName" type="text" placeholder="Pérez" />
+          <small class="error" *ngIf="form.controls.lastName.touched && form.controls.lastName.invalid">
+            Ingresa tus apellidos.
+          </small>
+        </label>
+
+        <label class="field">
+          <span>Tipo de documento</span>
+          <select formControlName="docType">
+            <option *ngFor="let doc of docTypes" [value]="doc">{{ doc }}</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Número de documento</span>
+          <input formControlName="document" type="text" placeholder="1234567890" />
+          <small class="error" *ngIf="form.controls.document.touched && form.controls.document.invalid">
+            Ingresa tu documento.
+          </small>
+        </label>
+
+        <label class="field">
+          <span>Correo electrónico</span>
+          <input formControlName="email" type="email" placeholder="correo@ejemplo.com" />
+          <small class="error" *ngIf="form.controls.email.touched && form.controls.email.invalid">
+            Ingresa un correo válido.
+          </small>
+        </label>
+
+        <label class="field">
+          <span>Teléfono de contacto</span>
+          <input formControlName="telephone" type="tel" placeholder="3001234567" />
+          <small class="error" *ngIf="form.controls.telephone.touched && form.controls.telephone.invalid">
+            Ingresa un teléfono de contacto.
+          </small>
+        </label>
+
+        <ng-container *ngIf="showProfessionalCard">
+          <label class="field">
+            <span>¿Cuentas con tarjeta profesional?</span>
+            <div class="checkbox">
+              <input formControlName="professionalCard" type="checkbox" id="professionalCard" />
+              <label for="professionalCard">Sí, cuento con tarjeta profesional</label>
+            </div>
+          </label>
+
+          <label class="field">
+            <span>Especialidad (opcional)</span>
+            <input formControlName="specialty" type="text" placeholder="Terapia cognitivo conductual" />
+          </label>
+        </ng-container>
+
+        <label class="field">
+          <span>Contraseña</span>
+          <input formControlName="password" type="password" placeholder="••••••" />
+          <small class="error" *ngIf="form.controls.password.touched && form.controls.password.invalid">
+            La contraseña debe tener al menos 6 caracteres.
+          </small>
+        </label>
+
+        <label class="field">
+          <span>Confirma tu contraseña</span>
+          <input formControlName="confirmPassword" type="password" placeholder="••••••" />
+          <small class="error" *ngIf="passwordMismatch && form.controls.confirmPassword.touched">
+            Las contraseñas no coinciden.
+          </small>
+        </label>
+      </div>
+
+      <button type="submit" class="submit" [disabled]="loading()">
+        {{ loading() ? 'Enviando…' : config().buttonLabel }}
+      </button>
+    </form>
+
+    <p class="feedback" *ngIf="feedback()">{{ feedback() }}</p>
+    <p class="error" *ngIf="error()">{{ error() }}</p>
+  </section>
+</div>
