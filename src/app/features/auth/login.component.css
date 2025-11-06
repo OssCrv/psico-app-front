@@ -18,6 +18,8 @@
   max-width: 420px;
   width: 100%;
   box-shadow: 0 30px 60px rgba(15, 23, 42, 0.1);
+  display: grid;
+  gap: 1.5rem;
 }
 
 h2 {
@@ -87,7 +89,7 @@ h2 {
 }
 
 .helper {
-  margin-top: 2rem;
+  margin: 0;
   padding: 1.25rem;
   border-radius: 1rem;
   background: #f9fafb;
@@ -111,4 +113,20 @@ code {
   background: rgba(37, 99, 235, 0.08);
   padding: 0.1rem 0.25rem;
   border-radius: 0.35rem;
+}
+
+.register-cta {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #4b5563;
+}
+
+.register-cta a {
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.register-cta a:hover {
+  text-decoration: underline;
 }

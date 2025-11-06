@@ -11,6 +11,21 @@ const routes: Routes = [
     loadComponent: () => import('./features/auth/login.component').then((m) => m.LoginComponent)
   },
   {
+    path: 'register',
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./features/auth/register/role-selection.component').then((m) => m.RoleSelectionComponent)
+      },
+      {
+        path: ':role',
+        loadComponent: () =>
+          import('./features/auth/register/register.component').then((m) => m.RegisterComponent)
+      }
+    ]
+  },
+  {
     path: 'admin',
     component: AdminLayoutComponent,
     canActivate: [authGuard, RoleGuard],
